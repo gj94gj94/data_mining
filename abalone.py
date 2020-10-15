@@ -5,14 +5,9 @@ from sklearn.preprocessing import OneHotEncoder as ohe
 import numpy as np
 enc = ohe(categories='auto')
 sex = origin['sex']
-print(sex.to_numpy().reshape(-1,1))
 t = enc.fit_transform(sex.to_numpy().reshape(-1,1)).toarray()
-print(t)
 sex = pd.DataFrame(data=t)
-print(sex)
-#origin = origin.drop('sex', axis=1).combine(sex, np.minimum, overwrite=False)
 origin = pd.concat([origin.drop('sex', axis=1), sex], axis=1)
-print(origin)
 
 
 # Split origin dataset to training and testing dataset
@@ -23,10 +18,9 @@ trainX = train.drop('rings', axis=1).sort_index(ascending=True)
 trainY = train['rings'].sort_index(ascending=True)
 testX = test.drop('rings', axis=1).sort_index(ascending=True)
 testY = test['rings'].sort_index(ascending=True)
-print(testX, testY)
 
 from sklearn import tree
-dt = tree.DecisionTreeClassifier(min_samples_split=5, min_samples_leaf=2)
+dt = tree.DecisionTreeClassifier()
 dt = dt.fit(trainX, trainY)
 train_predict = dt.predict(trainX)
 test_predict = dt.predict(testX)
